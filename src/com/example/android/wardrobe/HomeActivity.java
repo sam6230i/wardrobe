@@ -18,7 +18,9 @@ package com.example.android.wardrobe;
 
 import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
+import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,7 +30,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
@@ -37,12 +42,14 @@ import com.example.android.sqlite.Pant;
 import com.example.android.sqlite.WardrobeDataSource;
 import com.example.android.sqlite.Shirt;
 import com.example.android.wardrobe.fragments.FavoritesFragment;
+import com.example.android.util.Menu;
 import com.example.android.wardrobe.fragments.LeftMenuFragment;
 import com.example.android.wardrobe.fragments.SelectionFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,6 +77,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 	public WardrobeDataSource wardrobeDataSource;
 
 	public Fragment currentFragment;
+	LeftMenuFragment leftMenuFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +96,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 
 		setFavoriteFragment();
 
-		LeftMenuFragment leftMenuFragment = new LeftMenuFragment();
+		leftMenuFragment = new LeftMenuFragment();
 		FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.menu_frame, leftMenuFragment);
 		t.commitAllowingStateLoss();
@@ -386,4 +394,23 @@ public class HomeActivity extends SlidingFragmentActivity {
 			return list.size();
 		}
 	}*/
+
+
+	public void onActionSelected(Menu action) {
+
+		try {
+			showContent();
+			FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
+			currentFragment = (Fragment) action.getKlass().newInstance();
+			t.replace(R.id.content, currentFragment);
+			t.commit();
+
+			leftMenuFragment.notifyDataChanged();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+	}
 }
