@@ -1,5 +1,6 @@
 package com.example.android.sqlite;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -57,6 +58,11 @@ public class Wore {
 
 	public Date getWoreDate() {
 		return woreDate;
+	}
+
+	public String getWoreDateStr() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d");
+		return simpleDateFormat.format(woreDate);
 	}
 
 	public void setWoreDate(Date woreDate) {

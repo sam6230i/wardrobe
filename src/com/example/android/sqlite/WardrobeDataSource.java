@@ -266,7 +266,7 @@ public class WardrobeDataSource {
 
 			Pant pant = getPant(wore.getPantId());
 			if (pant != null) {
-				wore.setPantPath(wore.getPantPath());
+				wore.setPantPath(pant.getImagePath());
 			}
 
 			woreList.add(wore);

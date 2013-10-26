@@ -37,10 +37,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
-import com.example.android.sqlite.Favourite;
-import com.example.android.sqlite.Pant;
-import com.example.android.sqlite.WardrobeDataSource;
-import com.example.android.sqlite.Shirt;
+import com.example.android.sqlite.*;
 import com.example.android.wardrobe.fragments.FavoritesFragment;
 import com.example.android.util.Menu;
 import com.example.android.wardrobe.fragments.LeftMenuFragment;
@@ -74,7 +71,10 @@ public class HomeActivity extends SlidingFragmentActivity {
 
 	public List<Favourite> favourites;
 
+	public List<Wore> wores;
+
 	public WardrobeDataSource wardrobeDataSource;
+
 
 	public Fragment currentFragment;
 	LeftMenuFragment leftMenuFragment;
