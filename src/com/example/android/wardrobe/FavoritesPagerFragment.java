@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.android.util.JuSmartImageView;
 import com.loopj.android.image.SmartImageView;
 
 /**
@@ -75,10 +76,10 @@ public class FavoritesPagerFragment extends Fragment {
 
         // Set the title view to show the page number.
 //	    File bitmapFile = new File(shirtImagePath);
-	    Bitmap shirtBitmap = BitmapFactory.decodeFile(shirtImagePath);
-	    Bitmap pantBitmap = BitmapFactory.decodeFile(pantImagePath);
-	    ((SmartImageView) rootView.findViewById(R.id.shirtImage)).setImageBitmap(shirtBitmap);
-	    ((SmartImageView) rootView.findViewById(R.id.pantImage)).setImageBitmap(pantBitmap);
+//	    Bitmap shirtBitmap = BitmapFactory.decodeFile(shirtImagePath);
+//	    Bitmap pantBitmap = BitmapFactory.decodeFile(pantImagePath);
+	    ((JuSmartImageView) rootView.findViewById(R.id.shirtImage)).setLocalImageUrl(shirtImagePath);
+	    ((JuSmartImageView) rootView.findViewById(R.id.pantImage)).setLocalImageUrl(pantImagePath);
 /*			    ((ImageView) rootView.findViewById(R.id.image)).setText(
 			    getString(R.string.title_template_step, shirtImagePath + 1));*/
 

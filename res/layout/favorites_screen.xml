@@ -26,7 +26,7 @@
     <!-- Dummy content. -->
 
 
-        <com.loopj.android.image.SmartImageView android:id="@+id/shirtImage"
+        <com.example.android.util.JuSmartImageView android:id="@+id/shirtImage"
             style="?android:textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -35,7 +35,7 @@
             android:layout_weight="0.5"
             />
 
-	<com.loopj.android.image.SmartImageView android:id="@+id/pantImage"
+	<com.example.android.util.JuSmartImageView android:id="@+id/pantImage"
 	                                        style="?android:textAppearanceLarge"
 	                                        android:layout_width="match_parent"
 	                                        android:layout_height="0dp"

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.android.util.JuSmartImageView;
 import com.loopj.android.image.SmartImageView;
 
 /**
@@ -72,8 +73,10 @@ public class SingleViewPagerFragment extends Fragment {
 
         // Set the title view to show the page number.
 //	    File bitmapFile = new File(imagePath);
-	    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-	    ((SmartImageView) rootView.findViewById(R.id.image)).setImageBitmap(bitmap);
+//	    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+//	    ((SmartImageView) rootView.findViewById(R.id.image)).setImageBitmap(bitmap);
+
+	    ((JuSmartImageView) rootView.findViewById(R.id.image)).setLocalImageUrl(imagePath);
 /*			    ((ImageView) rootView.findViewById(R.id.image)).setText(
 			    getString(R.string.title_template_step, imagePath + 1));*/
 

@@ -22,7 +22,7 @@
     <!-- Dummy content. -->
 
 
-        <com.loopj.android.image.SmartImageView android:id="@+id/image"
+        <com.example.android.util.JuSmartImageView android:id="@+id/image"
             style="?android:textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
