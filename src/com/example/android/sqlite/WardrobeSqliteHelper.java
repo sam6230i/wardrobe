@@ -8,10 +8,12 @@ public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 
 	public static final String SHIRTS_TABLE_NAME = "shirts";
 	public static final String FAVOURITES_TABLE_NAME = "favourites";
+	public static final String WORE_TABLE_NAME = "wore";
 	public static final String PANTS_TABLE_NAME = "pants";
 	public static final String COLUMN_ID = "_id";
 	public static final String PANT_ID = "pant_id";
 	public static final String SHIRT_ID = "shirt_id";
+	public static final String WORE_DATE = "wore_date";
 	public static final String COLUMN_IMAGE_PATH = "path";
 
 	private static final String DATABASE_NAME = "wardrobe.db";
@@ -38,6 +40,17 @@ public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 			+ " UNIQUE(" + SHIRT_ID + "," +  PANT_ID + ") ON CONFLICT IGNORE "
 			+ ")";
 
+	private static final String WORE_TABLE_CREATE = "create table "
+			+ WORE_TABLE_NAME + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, "
+			+ SHIRT_ID + " integer, "
+			+ PANT_ID + " integer, "
+			+ WORE_DATE + " integer, "
+			+ " FOREIGN KEY(" + SHIRT_ID + ") REFERENCES " + SHIRTS_TABLE_NAME + "(" + COLUMN_ID + ") "
+			+ " FOREIGN KEY(" + PANT_ID + ") REFERENCES " + PANTS_TABLE_NAME + "(" + COLUMN_ID + ") "
+			+ " UNIQUE(" + SHIRT_ID + ", " +  PANT_ID + ", " + WORE_DATE + ") ON CONFLICT IGNORE "
+			+ ")";
+
 	public WardrobeSqliteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -47,6 +60,7 @@ public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 		database.execSQL(PANTS_TABLE_CREATE);
 		database.execSQL(SHIRTS_TABLE_CREATE);
 		database.execSQL(FAVOURITES_TABLE_CREATE);
+		database.execSQL(WORE_TABLE_CREATE);
 	}
 
 	@Override
@@ -55,6 +69,7 @@ public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + FAVOURITES_TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + WORE_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + SHIRTS_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + PANTS_TABLE_NAME);
 		onCreate(db);

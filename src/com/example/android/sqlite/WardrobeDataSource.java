@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class WardrobeDataSource {
@@ -19,6 +21,9 @@ public class WardrobeDataSource {
 
 	private String[] favourtiesAllColumns = { WardrobeSqliteHelper.COLUMN_ID,
 			WardrobeSqliteHelper.SHIRT_ID, WardrobeSqliteHelper.PANT_ID};
+
+	private String[] woreAllColumns = { WardrobeSqliteHelper.COLUMN_ID,
+			WardrobeSqliteHelper.SHIRT_ID, WardrobeSqliteHelper.PANT_ID, WardrobeSqliteHelper.WORE_DATE};
 
 	public WardrobeDataSource(Context context) {
 		dbHelper = new WardrobeSqliteHelper(context);
@@ -185,5 +190,79 @@ public class WardrobeDataSource {
 		cursor.close();
 		return favourites;
 	}
+
+	//wore database methods
+
+	public long addToWore(long shirtId, long pantId) {
+
+		ContentValues values = new ContentValues();
+		values.put(WardrobeSqliteHelper.SHIRT_ID, shirtId);
+		values.put(WardrobeSqliteHelper.PANT_ID, pantId);
+		values.put(WardrobeSqliteHelper.WORE_DATE, getStartOfDayTime());
+		long insertId = database.insertWithOnConflict(WardrobeSqliteHelper.WORE_TABLE_NAME, null,
+				values, SQLiteDatabase.CONFLICT_IGNORE);
+		return insertId;
+	}
+
+	public void deleteFromWore(long shirtId, long pantId) {
+		long startOfDayTime = getStartOfDayTime();
+		database.delete(WardrobeSqliteHelper.WORE_TABLE_NAME,
+				WardrobeSqliteHelper.SHIRT_ID + " =  ? "
+						+ " and " + WardrobeSqliteHelper.PANT_ID + " = ?"
+						+ " and " + WardrobeSqliteHelper.WORE_DATE + " = ?",
+				new String[] {Long.toString(shirtId),
+						Long.toString(pantId), Long.toString(startOfDayTime)}
+		);
+	}
+
+	public List<Wore> getWhatIWore() {
+		List<Wore> woreList = new ArrayList<Wore>();
+
+		Cursor cursor = database.query(WardrobeSqliteHelper.WORE_TABLE_NAME,
+				woreAllColumns, null, null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Wore wore = new Wore();
+			wore.setId(cursor.getLong(0));
+			wore.setShirtId(cursor.getLong(1));
+			wore.setPantId(cursor.getLong(2));
+			wore.setWoreDate(createDate(cursor.getLong(3)));
+
+			Shirt shirt = getShirt(wore.getShirtId());
+			if (shirt != null) {
+				wore.setShirtPath(shirt.getImagePath());
+			}
+
+			Pant pant = getPant(wore.getPantId());
+			if (pant != null) {
+				wore.setPantPath(wore.getPantPath());
+			}
+
+			woreList.add(wore);
+			cursor.moveToNext();
+		}
+		// make sure to close the cursor
+		cursor.close();
+		return woreList;
+	}
+
+	public long getStartOfDayTime() {
+		//calculating start of the day timestamp in seconds
+		Calendar instance = Calendar.getInstance();
+		int year = instance.get(Calendar.YEAR);
+		int month = instance.get(Calendar.MONTH);
+		int day = instance.get(Calendar.DATE);
+		instance.clear();
+		instance.set(year, month, day);
+		long time = instance.getTimeInMillis() / 1000;
+		return time;
+	}
+
+	public Date createDate(long timeInSeconds) {
+		long timeInMills = timeInSeconds * 1000;
+		return new Date(timeInMills);
+	}
+
 
 }
