@@ -1,13 +1,26 @@
 package com.example.android.wardrobe.fragments;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.*;
+import com.example.android.sqlite.Pant;
+import com.example.android.sqlite.Shirt;
+import com.example.android.util.Menu;
 import com.example.android.wardrobe.HomeActivity;
+import com.example.android.wardrobe.LeftMenuAdapter;
 import com.example.android.wardrobe.R;
+import com.example.android.wardrobe.ScreenSlidePageFragment;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,19 +35,47 @@ public class LeftMenuFragment extends Fragment {
 
 
 	public HomeActivity activity;
+	ListView leftList;
+	LeftMenuAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View root = inflater.inflate(R.layout.left_menu, container, false);
 
-		return root;
+		View view = inflater.inflate(R.layout.left_menu, null);
+		leftList = (ListView) view.findViewById(R.id.left_list);
+		return view;
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);    //To change body of overridden methods use File | Settings | File Templates.
 		this.activity = (HomeActivity)activity;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		adapter = new LeftMenuAdapter(activity, R.layout.left_menu_row, R.id.txt_action);
+		leftList.setAdapter(adapter);
+		leftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView parent, View view, int position, long id) {
+				Adapter adapter = parent.getAdapter();
+				Menu action = (Menu) adapter.getItem(position);
+				activity.onActionSelected(action);
+			}
+		});
+	}
+
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+
+	}
+
+	public void notifyDataChanged() {
+		adapter.notifyDataSetChanged();
 	}
 
 }
