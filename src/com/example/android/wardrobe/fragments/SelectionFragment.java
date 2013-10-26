@@ -152,7 +152,8 @@ public class SelectionFragment extends Fragment {
 	public void check() {
 		int shirtPosition = mPager.getCurrentItem();
 		int pantPosition = mPager1.getCurrentItem();
-		if(!activity.shirts.isEmpty() && !activity.pants.isEmpty()) {
+
+		if (!activity.shirts.isEmpty() && !activity.pants.isEmpty()) {
 			if(activity.wardrobeDataSource.isWornToday(
 					activity.shirts.get(shirtPosition).getId(),
 					activity.pants.get(pantPosition).getId())) {
@@ -169,6 +170,8 @@ public class SelectionFragment extends Fragment {
 				favorite.setChecked(false);
 			}
 		}
+	}
+
 	}
 
 
