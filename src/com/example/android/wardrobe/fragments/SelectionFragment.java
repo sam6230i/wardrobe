@@ -172,9 +172,6 @@ public class SelectionFragment extends Fragment {
 		}
 	}
 
-	}
-
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);    //To change body of overridden methods use File | Settings | File Templates.
