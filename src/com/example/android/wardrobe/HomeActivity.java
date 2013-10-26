@@ -18,9 +18,7 @@ package com.example.android.wardrobe;
 
 import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
-import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,23 +28,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v13.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
+import com.example.android.sqlite.Favourite;
 import com.example.android.sqlite.Pant;
 import com.example.android.sqlite.WardrobeDataSource;
 import com.example.android.sqlite.Shirt;
+import com.example.android.wardrobe.fragments.FavoritesFragment;
 import com.example.android.wardrobe.fragments.LeftMenuFragment;
 import com.example.android.wardrobe.fragments.SelectionFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,7 +55,7 @@ import java.util.List;
  * animating the current screen out (to the left) and the next screen in (from the right). The
  * reverse animation is played when the user presses the "previous" button.</p>
  *
- * @see ScreenSlidePageFragment
+ * @see SingleViewPagerFragment
  */
 public class HomeActivity extends SlidingFragmentActivity {
 	/**
@@ -68,6 +64,8 @@ public class HomeActivity extends SlidingFragmentActivity {
 
 	public List<Shirt> shirts;
 	public List<Pant> pants;
+
+	public List<Favourite> favourites;
 
 	public WardrobeDataSource wardrobeDataSource;
 
@@ -88,7 +86,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 		sm.setBehindScrollScale(0);
 		sm.setMode(SlidingMenu.LEFT);
 
-		setSelectionFragment();
+		setFavoriteFragment();
 
 		LeftMenuFragment leftMenuFragment = new LeftMenuFragment();
 		FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
@@ -102,6 +100,14 @@ public class HomeActivity extends SlidingFragmentActivity {
 		t.replace(R.id.content, selectionFragment);
 		t.commitAllowingStateLoss();
 		currentFragment = selectionFragment;
+	}
+
+	public void setFavoriteFragment(){
+		FavoritesFragment favoritesFragment = new FavoritesFragment();
+		FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.content, favoritesFragment);
+		t.commitAllowingStateLoss();
+		currentFragment = favoritesFragment;
 	}
 
 	public void leftMenu(View view) {
@@ -310,7 +316,7 @@ public class HomeActivity extends SlidingFragmentActivity {
   /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.activity_screen_slide, menu);
+        getMenuInflater().inflate(R.menu.activity_home_selection, menu);
 
         menu.findItem(R.id.action_previous).setEnabled(mPager.getCurrentItem() > 0);
 
@@ -350,7 +356,7 @@ public class HomeActivity extends SlidingFragmentActivity {
     }*/
 
 	/**
-	 * A simple pager adapter that represents 5 {@link ScreenSlidePageFragment} objects, in
+	 * A simple pager adapter that represents 5 {@link SingleViewPagerFragment} objects, in
 	 * sequence.
 	 */
 	/*private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -372,7 +378,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 			} else {
 				imagePath = ((Pant) list.get(position)).getImagePath();
 			}
-			return ScreenSlidePageFragment.create(imagePath);
+			return SingleViewPagerFragment.create(imagePath);
 		}
 
 		@Override

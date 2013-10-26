@@ -16,10 +16,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import com.example.android.sqlite.Pant;
 import com.example.android.sqlite.Shirt;
-import com.example.android.sqlite.WardrobeDataSource;
 import com.example.android.wardrobe.HomeActivity;
 import com.example.android.wardrobe.R;
-import com.example.android.wardrobe.ScreenSlidePageFragment;
+import com.example.android.wardrobe.SingleViewPagerFragment;
 
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class SelectionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		View root = inflater.inflate(R.layout.activity_screen_slide, container, false);
+		View root = inflater.inflate(R.layout.activity_home_selection, container, false);
 
 		activity.shirts = activity.wardrobeDataSource.getAllShirts();
 		activity.pants = activity.wardrobeDataSource.getAllPants();
@@ -153,20 +152,22 @@ public class SelectionFragment extends Fragment {
 	public void check() {
 		int shirtPosition = mPager.getCurrentItem();
 		int pantPosition = mPager1.getCurrentItem();
-		if(activity.wardrobeDataSource.isWornToday(
-				activity.shirts.get(shirtPosition).getId(),
-				activity.pants.get(pantPosition).getId())) {
-			selection.setChecked(true);
-		} else {
-			selection.setChecked(false);
-		}
+		if(!activity.shirts.isEmpty() && !activity.pants.isEmpty()) {
+			if(activity.wardrobeDataSource.isWornToday(
+					activity.shirts.get(shirtPosition).getId(),
+					activity.pants.get(pantPosition).getId())) {
+				selection.setChecked(true);
+			} else {
+				selection.setChecked(false);
+			}
 
-		if(activity.wardrobeDataSource.isFavourite(
-				activity.shirts.get(shirtPosition).getId(),
-				activity.pants.get(pantPosition).getId())) {
-			favorite.setChecked(true);
-		} else {
-			favorite.setChecked(false);
+			if(activity.wardrobeDataSource.isFavourite(
+					activity.shirts.get(shirtPosition).getId(),
+					activity.pants.get(pantPosition).getId())) {
+				favorite.setChecked(true);
+			} else {
+				favorite.setChecked(false);
+			}
 		}
 	}
 
@@ -196,7 +197,7 @@ public class SelectionFragment extends Fragment {
 			} else {
 				imagePath = ((Pant) list.get(position)).getImagePath();
 			}
-			return ScreenSlidePageFragment.create(imagePath);
+			return SingleViewPagerFragment.create(imagePath);
 		}
 
 		@Override

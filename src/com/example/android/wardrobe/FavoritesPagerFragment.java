@@ -30,37 +30,40 @@ import com.loopj.android.image.SmartImageView;
  * the page number, along with some dummy text.
  *
  * <p>This class is used by the {@link CardFlipActivity} and {@link
- * HomeActivity} samples.</p>
+ * com.example.android.wardrobe.HomeActivity} samples.</p>
  */
-public class ScreenSlidePageFragment extends Fragment {
+public class FavoritesPagerFragment extends Fragment {
     /**
      * The argument key for the page number this fragment represents.
      */
-    public static final String IMAGE_PATH = "image_path";
+    public static final String SHIRT_IMAGE_PATH = "shirt_image_path";
+    public static final String PANT_IMAGE_PATH = "pant_image_path";
 
     /**
-     * The fragment's page number, which is set to the argument value for {@link #IMAGE_PATH}.
+     * The fragment's page number, which is set to the argument value for {@link #SHIRT_IMAGE_PATH}.
      */
-    private String imagePath;
+    private String shirtImagePath, pantImagePath;
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
      */
-    public static ScreenSlidePageFragment create(String imagePath) {
-        ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
+    public static FavoritesPagerFragment create(String shirtImagePath, String pantImagePath) {
+        FavoritesPagerFragment fragment = new FavoritesPagerFragment();
         Bundle args = new Bundle();
-        args.putString(IMAGE_PATH, imagePath);
+        args.putString(SHIRT_IMAGE_PATH, shirtImagePath);
+        args.putString(PANT_IMAGE_PATH, pantImagePath);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public ScreenSlidePageFragment() {
+    public FavoritesPagerFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imagePath = getArguments().getString(IMAGE_PATH);
+        shirtImagePath = getArguments().getString(SHIRT_IMAGE_PATH);
+	    pantImagePath = getArguments().getString(PANT_IMAGE_PATH);
     }
 
     @Override
@@ -68,19 +71,21 @@ public class ScreenSlidePageFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.fragment_screen_slide_page, container, false);
+                .inflate(R.layout.favorites_screen, container, false);
 
         // Set the title view to show the page number.
-//	    File bitmapFile = new File(imagePath);
-	    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-	    ((SmartImageView) rootView.findViewById(R.id.image)).setImageBitmap(bitmap);
+//	    File bitmapFile = new File(shirtImagePath);
+	    Bitmap shirtBitmap = BitmapFactory.decodeFile(shirtImagePath);
+	    Bitmap pantBitmap = BitmapFactory.decodeFile(pantImagePath);
+	    ((SmartImageView) rootView.findViewById(R.id.shirtImage)).setImageBitmap(shirtBitmap);
+	    ((SmartImageView) rootView.findViewById(R.id.pantImage)).setImageBitmap(pantBitmap);
 /*			    ((ImageView) rootView.findViewById(R.id.image)).setText(
-			    getString(R.string.title_template_step, imagePath + 1));*/
+			    getString(R.string.title_template_step, shirtImagePath + 1));*/
 
         return rootView;
     }
 
 /*    public int getPageNumber() {
-        return imagePath;
+        return shirtImagePath;
     }*/
 }

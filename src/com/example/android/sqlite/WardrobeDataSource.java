@@ -194,7 +194,7 @@ public class WardrobeDataSource {
 
 			Pant pant = getPant(favourite.getPantId());
 			if (pant != null) {
-				favourite.setPantPath(favourite.getPantPath());
+				favourite.setPantPath(pant.getImagePath());
 			}
 
 			favourites.add(favourite);
