@@ -52,7 +52,7 @@
 				             android:layout_weight="1"
 				             android:layout_centerVertical="true"
 				             android:layout_alignParentLeft="true"
-				             android:src="@drawable/btn_suffle_up"
+				             android:src="@drawable/shuffle_btn_selector"
 				             android:background="#00000000"
 				             android:layout_marginLeft="10dp"
 						/>
