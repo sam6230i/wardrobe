@@ -33,9 +33,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.example.android.sqlite.Pant;
-import com.example.android.sqlite.PantDataSource;
+import com.example.android.sqlite.WardrobeDataSource;
 import com.example.android.sqlite.Shirt;
-import com.example.android.sqlite.ShirtDataSource;
 
 import java.io.*;
 import java.util.Arrays;
@@ -70,16 +69,13 @@ public class MainActivity extends ListActivity {
 	 * android.content.res.Resources}.
 	 */
 	private static Sample[] mSamples;
-	private ShirtDataSource shirtDataSource;
-	private PantDataSource pantDataSource;
+	private WardrobeDataSource wardrobeDataSource;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		shirtDataSource = new ShirtDataSource(this);
-		shirtDataSource.open();
-		pantDataSource = new PantDataSource(this);
-		pantDataSource.open();
+		wardrobeDataSource = new WardrobeDataSource(this);
+		wardrobeDataSource.open();
 		// Instantiate the list of samples.
 		mSamples = new Sample[]{
 				new Sample(R.string.add_shirt, CrossfadeActivity.class),
@@ -191,9 +187,9 @@ public class MainActivity extends ListActivity {
 							-1, -1
 					);
 					if(addWhat == 0){
-						shirtDataSource.addShirt(new Shirt(getRealPathFromURI(getImageUri(bitmap))));
+						wardrobeDataSource.addShirt(new Shirt(getRealPathFromURI(getImageUri(bitmap))));
 					} else if(addWhat == 1) {
-						pantDataSource.addPant(new Pant(getRealPathFromURI(getImageUri(bitmap))));
+						wardrobeDataSource.addPant(new Pant(getRealPathFromURI(getImageUri(bitmap))));
 					}
 //					original = getResizedImageBitmap(mImageCaptureUri, -1, -1);
 //					setBitmap(getBitmap());
@@ -206,9 +202,9 @@ public class MainActivity extends ListActivity {
 								-1,-1
 						);
 						if(addWhat == 0){
-							shirtDataSource.addShirt(new Shirt(getRealPathFromURI(getImageUri(bitmap1))));
+							wardrobeDataSource.addShirt(new Shirt(getRealPathFromURI(getImageUri(bitmap1))));
 						} else if(addWhat == 1) {
-							pantDataSource.addPant(new Pant(getRealPathFromURI(getImageUri(bitmap1))));
+							wardrobeDataSource.addPant(new Pant(getRealPathFromURI(getImageUri(bitmap1))));
 						}
 
 //						original = getResizedImageBitmap(mImageCaptureUri, -1, -1);

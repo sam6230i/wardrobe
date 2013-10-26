@@ -25,9 +25,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import com.example.android.sqlite.Pant;
-import com.example.android.sqlite.PantDataSource;
+import com.example.android.sqlite.WardrobeDataSource;
 import com.example.android.sqlite.Shirt;
-import com.example.android.sqlite.ShirtDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +50,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 
 	List<Shirt> shirts = new ArrayList<Shirt>();
 	List<Pant> pants = new ArrayList<Pant>();
-	private ShirtDataSource shirtDataSource;
-	private PantDataSource pantDataSource;
+	private WardrobeDataSource wardrobeDataSource;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -71,13 +69,11 @@ public class ScreenSlideActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screen_slide);
-		shirtDataSource = new ShirtDataSource(this);
-		shirtDataSource.open();
-		pantDataSource = new PantDataSource(this);
-		pantDataSource.open();
+		wardrobeDataSource = new WardrobeDataSource(this);
+		wardrobeDataSource.open();
 
-		List<Shirt> shirts1 = shirtDataSource.getAllShirts();
-		List<Pant> pants1 = pantDataSource.getAllPants();
+		List<Shirt> shirts1 = wardrobeDataSource.getAllShirts();
+		List<Pant> pants1 = wardrobeDataSource.getAllPants();
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);

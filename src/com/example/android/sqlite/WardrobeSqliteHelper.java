@@ -4,36 +4,43 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class ShirtsSqliteHelper extends SQLiteOpenHelper {
+public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 
-	public static final String TABLE_NAME = "shirts";
+	public static final String SHIRTS_TABLE_NAME = "shirts";
+	public static final String PANTS_TABLE_NAME = "pants";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_IMAGE_PATH = "path";
 
-	private static final String DATABASE_NAME = "shirts.db";
+	private static final String DATABASE_NAME = "wardrobe.db";
 	private static final int DATABASE_VERSION = 1;
 
 	// Database creation sql statement
-	private static final String DATABASE_CREATE = "create table "
-			+ TABLE_NAME + "(" + COLUMN_ID
+	private static final String PANTS_TABLE_CREATE = "create table "
+			+ PANTS_TABLE_NAME + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_IMAGE_PATH
 			+ " text not null);";
 
-	public ShirtsSqliteHelper(Context context) {
+	private static final String SHIRTS_TABLE_CREATE = "create table "
+			+ SHIRTS_TABLE_NAME + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, " + COLUMN_IMAGE_PATH
+			+ " text not null);";
+
+	public WardrobeSqliteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase database) {
-		database.execSQL(DATABASE_CREATE);
+		database.execSQL(PANTS_TABLE_CREATE);
+		database.execSQL(SHIRTS_TABLE_CREATE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(ShirtsSqliteHelper.class.getName(),
+		Log.w(WardrobeSqliteHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + PANTS_TABLE_NAME);
 		onCreate(db);
 	}
 
