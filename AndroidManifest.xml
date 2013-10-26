@@ -63,7 +63,7 @@
             android:parentActivityName=".MainActivity"
             android:uiOptions="splitActionBarWhenNarrow">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-               m android:value=".MainActivity" />
+               android:value=".MainActivity" />
         </activity>
 
         <activity android:name=".ZoomActivity"
