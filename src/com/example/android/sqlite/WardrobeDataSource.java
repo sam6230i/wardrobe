@@ -17,6 +17,9 @@ public class WardrobeDataSource {
 	private String[] allColumns = { WardrobeSqliteHelper.COLUMN_ID,
 			WardrobeSqliteHelper.COLUMN_IMAGE_PATH};
 
+	private String[] favourtiesAllColumns = { WardrobeSqliteHelper.COLUMN_ID,
+			WardrobeSqliteHelper.SHIRT_ID, WardrobeSqliteHelper.PANT_ID};
+
 	public WardrobeDataSource(Context context) {
 		dbHelper = new WardrobeSqliteHelper(context);
 	}
@@ -35,8 +38,13 @@ public class WardrobeDataSource {
 		values.put(WardrobeSqliteHelper.COLUMN_IMAGE_PATH, pant.getImagePath());
 		long insertId = database.insert(WardrobeSqliteHelper.PANTS_TABLE_NAME, null,
 				values);
+		Pant newPant = getPant(insertId);
+		return newPant;
+	}
+
+	public Pant getPant(long pantId) {
 		Cursor cursor = database.query(WardrobeSqliteHelper.PANTS_TABLE_NAME,
-				allColumns, WardrobeSqliteHelper.COLUMN_ID + " = " + insertId, null,
+				allColumns, WardrobeSqliteHelper.COLUMN_ID + " = " + pantId, null,
 				null, null, null);
 		cursor.moveToFirst();
 		Pant newPant = cursorToPant(cursor);
@@ -82,8 +90,13 @@ public class WardrobeDataSource {
 		values.put(WardrobeSqliteHelper.COLUMN_IMAGE_PATH, shirt.getImagePath());
 		long insertId = database.insert(WardrobeSqliteHelper.SHIRTS_TABLE_NAME, null,
 				values);
+		Shirt newShirt = getShirt(insertId);
+		return newShirt;
+	}
+
+	public Shirt getShirt(long shirtId) {
 		Cursor cursor = database.query(WardrobeSqliteHelper.SHIRTS_TABLE_NAME,
-				allColumns, WardrobeSqliteHelper.COLUMN_ID + " = " + insertId, null,
+				allColumns, WardrobeSqliteHelper.COLUMN_ID + " = " + shirtId, null,
 				null, null, null);
 		cursor.moveToFirst();
 		Shirt newShirt = cursorToShirt(cursor);
@@ -124,7 +137,7 @@ public class WardrobeDataSource {
 
 	//Favourites database methods
 
-	public long addFavourite(int shirtId, int pantId) {
+	public long addFavourite(long shirtId, long pantId) {
 		ContentValues values = new ContentValues();
 		values.put(WardrobeSqliteHelper.SHIRT_ID, shirtId);
 		values.put(WardrobeSqliteHelper.PANT_ID, pantId);
@@ -133,12 +146,44 @@ public class WardrobeDataSource {
 		return insertId;
 	}
 
-	public void deleteFavourite(int shirtId, int pantId) {
+	public void deleteFavourite(long shirtId, long pantId) {
 		database.delete(WardrobeSqliteHelper.FAVOURITES_TABLE_NAME,
 				WardrobeSqliteHelper.SHIRT_ID + " =  ? "
 				+ " and " + WardrobeSqliteHelper.PANT_ID + " = ?",
-				new String[] {Integer.toString(shirtId),
-				Integer.toString(pantId)}
+				new String[] {Long.toString(shirtId),
+				Long.toString(pantId)}
 				);
 	}
+
+	public List<Favourite> getAllFavourites() {
+		List<Favourite> favourites = new ArrayList<Favourite>();
+
+		Cursor cursor = database.query(WardrobeSqliteHelper.FAVOURITES_TABLE_NAME,
+				favourtiesAllColumns, null, null, null, null, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Favourite favourite = new Favourite();
+			favourite.setId(cursor.getLong(0));
+			favourite.setShirtId(cursor.getLong(1));
+			favourite.setPantId(cursor.getLong(2));
+
+			Shirt shirt = getShirt(favourite.getShirtId());
+			if (shirt != null) {
+				favourite.setShirtPath(shirt.getImagePath());
+			}
+
+			Pant pant = getPant(favourite.getPantId());
+			if (pant != null) {
+				favourite.setPantPath(favourite.getPantPath());
+			}
+
+			favourites.add(favourite);
+			cursor.moveToNext();
+		}
+		// make sure to close the cursor
+		cursor.close();
+		return favourites;
+	}
+
 }
