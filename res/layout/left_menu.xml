@@ -19,6 +19,7 @@
 			android:src="@drawable/logo"/>
 
 	<ListView
+			android:layout_marginTop="10dip"
 			android:id="@+id/left_list"
 			android:layout_below="@id/logo_box"
 			android:layout_width="fill_parent"

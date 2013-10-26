@@ -40,8 +40,10 @@ public class LeftMenuAdapter extends ArrayAdapter {
 
 		if (item.getKlass() == homeActivity.currentFragment.getClass()) {
 			holder.imgAction.setImageResource(item.getSelectedDrawableId());
+			convertView.setBackgroundResource(R.drawable.selected_box_bg);
 		} else {
 			holder.imgAction.setImageResource(item.getDrawableId());
+			convertView.setBackgroundResource(R.drawable.normal_box_bg);
 		}
 
 
