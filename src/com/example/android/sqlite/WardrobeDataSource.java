@@ -121,4 +121,24 @@ public class WardrobeDataSource {
 		cursor.close();
 		return shirts;
 	}
+
+	//Favourites database methods
+
+	public long addFavourite(int shirtId, int pantId) {
+		ContentValues values = new ContentValues();
+		values.put(WardrobeSqliteHelper.SHIRT_ID, shirtId);
+		values.put(WardrobeSqliteHelper.PANT_ID, pantId);
+		long insertId = database.insertWithOnConflict(WardrobeSqliteHelper.FAVOURITES_TABLE_NAME, null,
+				values, SQLiteDatabase.CONFLICT_IGNORE);
+		return insertId;
+	}
+
+	public void deleteFavourite(int shirtId, int pantId) {
+		database.delete(WardrobeSqliteHelper.FAVOURITES_TABLE_NAME,
+				WardrobeSqliteHelper.SHIRT_ID + " =  ? "
+				+ " and " + WardrobeSqliteHelper.PANT_ID + " = ?",
+				new String[] {Integer.toString(shirtId),
+				Integer.toString(pantId)}
+				);
+	}
 }
