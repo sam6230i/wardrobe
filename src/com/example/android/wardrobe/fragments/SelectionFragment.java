@@ -153,21 +153,25 @@ public class SelectionFragment extends Fragment {
 	public void check() {
 		int shirtPosition = mPager.getCurrentItem();
 		int pantPosition = mPager1.getCurrentItem();
-		if(activity.wardrobeDataSource.isWornToday(
-				activity.shirts.get(shirtPosition).getId(),
-				activity.pants.get(pantPosition).getId())) {
-			selection.setChecked(true);
-		} else {
-			selection.setChecked(false);
+
+		if (!activity.shirts.isEmpty() && !activity.pants.isEmpty()) {
+			if(activity.wardrobeDataSource.isWornToday(
+					activity.shirts.get(shirtPosition).getId(),
+					activity.pants.get(pantPosition).getId())) {
+				selection.setChecked(true);
+			} else {
+				selection.setChecked(false);
+			}
+
+			if(activity.wardrobeDataSource.isFavourite(
+					activity.shirts.get(shirtPosition).getId(),
+					activity.pants.get(pantPosition).getId())) {
+				favorite.setChecked(true);
+			} else {
+				favorite.setChecked(false);
+			}
 		}
 
-		if(activity.wardrobeDataSource.isFavourite(
-				activity.shirts.get(shirtPosition).getId(),
-				activity.pants.get(pantPosition).getId())) {
-			favorite.setChecked(true);
-		} else {
-			favorite.setChecked(false);
-		}
 	}
 
 
