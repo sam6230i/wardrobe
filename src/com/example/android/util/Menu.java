@@ -1,6 +1,7 @@
 package com.example.android.util;
 
 import com.example.android.wardrobe.R;
+import com.example.android.wardrobe.fragments.FavoritesFragment;
 import com.example.android.wardrobe.fragments.SelectionFragment;
 
 /**
@@ -10,7 +11,7 @@ import com.example.android.wardrobe.fragments.SelectionFragment;
  */
 public enum Menu {
 	SELECTION(SelectionFragment.class, R.string.selection, R.drawable.cloth_icon_up, R.drawable.cloth_icon_dn),
-	FAVOURITE(SelectionFragment.class, R.string.favourites, R.drawable.like_icon_up, R.drawable.like_icon_dn),
+	FAVOURITE(FavoritesFragment.class, R.string.favourites, R.drawable.like_icon_up, R.drawable.like_icon_dn),
 	HISTORY(SelectionFragment.class, R.string.history, R.drawable.like_settings_up, R.drawable.like_settings_dn);
 
 	public int drawableId;

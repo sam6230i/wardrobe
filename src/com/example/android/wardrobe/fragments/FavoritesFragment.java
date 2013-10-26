@@ -87,6 +87,7 @@ public class FavoritesFragment extends Fragment {
 					);
 					activity.favourites.remove(position);
 					mPagerAdapter.notifyDataSetChanged();
+					mPager.invalidate();
 				}
 			}
 		});

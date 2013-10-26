@@ -94,7 +94,7 @@ public class HomeActivity extends SlidingFragmentActivity {
 		sm.setBehindScrollScale(0);
 		sm.setMode(SlidingMenu.LEFT);
 
-		setFavoriteFragment();
+		setSelectionFragment();
 
 		leftMenuFragment = new LeftMenuFragment();
 		FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
