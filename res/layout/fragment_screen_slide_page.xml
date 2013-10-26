@@ -14,25 +14,20 @@
   limitations under the License.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- Dummy content. -->
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+
 
         <com.loopj.android.image.SmartImageView android:id="@+id/image"
             style="?android:textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside"
+            android:scaleType="fitXY"
             android:adjustViewBounds="true"
             />
 
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
