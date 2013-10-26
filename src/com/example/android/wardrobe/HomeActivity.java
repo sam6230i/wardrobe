@@ -17,7 +17,7 @@
 package com.example.android.wardrobe;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -32,6 +32,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -39,6 +40,8 @@ import android.widget.Toast;
 import com.example.android.sqlite.Pant;
 import com.example.android.sqlite.WardrobeDataSource;
 import com.example.android.sqlite.Shirt;
+import com.example.android.wardrobe.fragments.LeftMenuFragment;
+import com.example.android.wardrobe.fragments.SelectionFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -58,70 +61,25 @@ import java.util.List;
  *
  * @see ScreenSlidePageFragment
  */
-public class ScreenSlideActivity extends SlidingFragmentActivity {
+public class HomeActivity extends SlidingFragmentActivity {
 	/**
 	 * The number of pages (wizard steps) to show in this demo.
 	 */
-//	private static final int NUM_PAGES = 5;
 
-	private WardrobeDataSource wardrobeDataSource;
+	public List<Shirt> shirts;
+	public List<Pant> pants;
 
-	/**
-	 * The pager widget, which handles animation and allows swiping horizontally to access previous
-	 * and next wizard steps.
-	 */
-	private ViewPager mPager;
-	private ViewPager mPager1;
+	public WardrobeDataSource wardrobeDataSource;
 
-	/**
-	 * The pager adapter, which provides the pages to the view pager widget.
-	 */
-	private PagerAdapter mPagerAdapter;
-	private PagerAdapter mPagerAdapter1;
-
-	private List<Shirt> shirts;
-	private List<Pant> pants;
+	public Fragment currentFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_screen_slide);
-		setBehindContentView(R.layout.left_menu);
+		setContentView(R.layout.home);
+		setBehindContentView(R.layout.left_menu_frame);
 		wardrobeDataSource = new WardrobeDataSource(this);
 		wardrobeDataSource.open();
-
-		shirts = shirtDataSource.getAllShirts();
-		pants = pantDataSource.getAllPants();
-
-		// Instantiate a ViewPager and a PagerAdapter.
-		mPager = (ViewPager) findViewById(R.id.pager);
-		mPagerAdapter = new ScreenSlidePagerAdapter(this, getFragmentManager(), shirts);
-		mPager.setAdapter(mPagerAdapter);
-		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				// When changing pages, reset the action bar actions since they are dependent
-				// on which page is currently active. An alternative approach is to have each
-				// fragment expose actions itself (rather than the activity exposing actions),
-				// but for simplicity, the activity provides the actions in this sample.
-				invalidateOptionsMenu();
-			}
-		});
-
-
-		mPager1 = (ViewPager) findViewById(R.id.pager1);
-		mPagerAdapter1 = new ScreenSlidePagerAdapter(this, getFragmentManager(), pants);
-		mPager1.setAdapter(mPagerAdapter1);
-		mPager1.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				// When changing pages, reset the action bar actions since they are dependent
-				// on which page is currently active. An alternative approach is to have each
-				// fragment expose actions itself (rather than the activity exposing actions),
-				// but for simplicity, the activity provides the actions in this sample.
-				invalidateOptionsMenu();
-			}
-		});
 
 		SlidingMenu sm = getSlidingMenu();
 		sm.setAnimationCacheEnabled(true);
@@ -129,6 +87,21 @@ public class ScreenSlideActivity extends SlidingFragmentActivity {
 		sm.setFadeEnabled(false);
 		sm.setBehindScrollScale(0);
 		sm.setMode(SlidingMenu.LEFT);
+
+		setSelectionFragment();
+
+		LeftMenuFragment leftMenuFragment = new LeftMenuFragment();
+		FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.menu_frame, leftMenuFragment);
+		t.commitAllowingStateLoss();
+	}
+
+	public void setSelectionFragment(){
+		SelectionFragment selectionFragment = new SelectionFragment();
+		FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.content, selectionFragment);
+		t.commitAllowingStateLoss();
+		currentFragment = selectionFragment;
 	}
 
 	public void leftMenu(View view) {
@@ -139,15 +112,6 @@ public class ScreenSlideActivity extends SlidingFragmentActivity {
 			slidingMenu.showMenu(true);
 		}
 	}
-
-/*	private void toggleMenu(boolean animate) {
-		SlidingMenu slidingMenu = getSlidingMenu();
-		if (slidingMenu.isMenuShowing() && !slidingMenu.isSecondaryMenuShowing()) {
-			slidingMenu.showContent(animate);
-		} else {
-			slidingMenu.showMenu(animate);
-		}
-	}*/
 
 	public void addShirt(View view) {
 		loadImage(0);
@@ -254,11 +218,15 @@ public class ScreenSlideActivity extends SlidingFragmentActivity {
 				-1, -1
 		);
 		if(addWhat == 0){
-			shirts.add(shirtDataSource.addShirt(new Shirt(getRealPathFromURI(getImageUri(bitmap)))));
-			mPagerAdapter.notifyDataSetChanged();
+			shirts.add(wardrobeDataSource.addShirt(new Shirt(getRealPathFromURI(getImageUri(bitmap)))));
+			if(currentFragment instanceof SelectionFragment) {
+				((SelectionFragment)currentFragment).mPagerAdapter.notifyDataSetChanged();
+			}
 		} else if(addWhat == 1) {
-			pants.add(pantDataSource.addPant(new Pant(getRealPathFromURI(getImageUri(bitmap)))));
-			mPagerAdapter1.notifyDataSetChanged();
+			pants.add(wardrobeDataSource.addPant(new Pant(getRealPathFromURI(getImageUri(bitmap)))));
+			if(currentFragment instanceof SelectionFragment) {
+				((SelectionFragment)currentFragment).mPagerAdapter1.notifyDataSetChanged();
+			}
 		}
 		Toast.makeText(this, "Added successfully", Toast.LENGTH_LONG).show();
 	}
@@ -385,7 +353,7 @@ public class ScreenSlideActivity extends SlidingFragmentActivity {
 	 * A simple pager adapter that represents 5 {@link ScreenSlidePageFragment} objects, in
 	 * sequence.
 	 */
-	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+	/*private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
 		private Context context;
 		private List list;
@@ -411,5 +379,5 @@ public class ScreenSlideActivity extends SlidingFragmentActivity {
 		public int getCount() {
 			return list.size();
 		}
-	}
+	}*/
 }

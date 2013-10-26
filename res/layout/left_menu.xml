@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:alwaysDrawnWithCache="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-</LinearLayout>
+	<ImageView
+			android:id="@+id/logo_box"
+			android:layout_width="fill_parent"
+			android:layout_height="66dip"
+			android:adjustViewBounds="true"
+			android:layout_marginTop="5dp"
+			android:layout_marginRight="5dp"
+			android:layout_alignParentTop="true"
+			android:scaleType="centerInside"
+			android:layout_alignParentRight="true"
+			android:src="@drawable/logo"/>
+
+	<ListView
+			android:id="@+id/left_list"
+			android:layout_below="@id/logo_box"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:divider="@null"
+			android:dividerHeight="0dip"/>
+
+</RelativeLayout>

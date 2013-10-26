@@ -30,7 +30,7 @@ import com.loopj.android.image.SmartImageView;
  * the page number, along with some dummy text.
  *
  * <p>This class is used by the {@link CardFlipActivity} and {@link
- * ScreenSlideActivity} samples.</p>
+ * HomeActivity} samples.</p>
  */
 public class ScreenSlidePageFragment extends Fragment {
     /**

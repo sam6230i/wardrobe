@@ -160,6 +160,20 @@ public class WardrobeDataSource {
 				);
 	}
 
+	public boolean isFavourite(long shirtId, long pantId) {
+		Cursor cursor = database.query(WardrobeSqliteHelper.FAVOURITES_TABLE_NAME,
+				favourtiesAllColumns,
+				WardrobeSqliteHelper.SHIRT_ID + " =  ? "
+						+ " and " + WardrobeSqliteHelper.PANT_ID + " = ?",
+				new String[]{Long.toString(shirtId),
+						Long.toString(pantId)}
+				, null, null, null
+		);
+
+		cursor.moveToFirst();
+		return cursor.getCount() > 0;
+	}
+
 	public List<Favourite> getAllFavourites() {
 		List<Favourite> favourites = new ArrayList<Favourite>();
 
@@ -213,6 +227,22 @@ public class WardrobeDataSource {
 				new String[] {Long.toString(shirtId),
 						Long.toString(pantId), Long.toString(startOfDayTime)}
 		);
+	}
+
+	public boolean isWornToday(long shirtId, long pantId) {
+		long startOfDayTime = getStartOfDayTime();
+		Cursor cursor = database.query(WardrobeSqliteHelper.WORE_TABLE_NAME,
+				woreAllColumns,
+				WardrobeSqliteHelper.SHIRT_ID + " =  ? "
+						+ " and " + WardrobeSqliteHelper.PANT_ID + " = ?"
+						+ " and " + WardrobeSqliteHelper.WORE_DATE + " = ?",
+				new String[]{Long.toString(shirtId),
+						Long.toString(pantId), Long.toString(startOfDayTime)}
+				, null, null, null
+		);
+
+		cursor.moveToFirst();
+		return cursor.getCount() > 0;
 	}
 
 	public List<Wore> getWhatIWore() {
