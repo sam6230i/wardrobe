@@ -37,9 +37,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
 import com.example.android.sqlite.Pant;
-import com.example.android.sqlite.PantDataSource;
+import com.example.android.sqlite.WardrobeDataSource;
 import com.example.android.sqlite.Shirt;
-import com.example.android.sqlite.ShirtDataSource;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -65,8 +64,7 @@ public class ScreenSlideActivity extends SlidingFragmentActivity {
 	 */
 //	private static final int NUM_PAGES = 5;
 
-	private ShirtDataSource shirtDataSource;
-	private PantDataSource pantDataSource;
+	private WardrobeDataSource wardrobeDataSource;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -89,10 +87,8 @@ public class ScreenSlideActivity extends SlidingFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screen_slide);
 		setBehindContentView(R.layout.left_menu);
-		shirtDataSource = new ShirtDataSource(this);
-		shirtDataSource.open();
-		pantDataSource = new PantDataSource(this);
-		pantDataSource.open();
+		wardrobeDataSource = new WardrobeDataSource(this);
+		wardrobeDataSource.open();
 
 		shirts = shirtDataSource.getAllShirts();
 		pants = pantDataSource.getAllPants();
