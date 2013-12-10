@@ -2,6 +2,7 @@ package com.example.android.util;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import com.loopj.android.image.SmartImageView;
 
 /**

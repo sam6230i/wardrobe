@@ -4,6 +4,7 @@ package com.example.android.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import com.loopj.android.image.SmartImage;
 import com.loopj.android.image.WebImageCache;
 

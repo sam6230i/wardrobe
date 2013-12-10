@@ -1,5 +1,7 @@
 package com.example.android.wardrobe.fragments;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -13,16 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
+
 import com.example.android.sqlite.Favourite;
-import com.example.android.sqlite.Pant;
-import com.example.android.sqlite.Shirt;
 import com.example.android.wardrobe.FavoritesPagerFragment;
 import com.example.android.wardrobe.HomeActivity;
 import com.example.android.wardrobe.R;
-import com.example.android.wardrobe.SingleViewPagerFragment;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

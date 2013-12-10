@@ -17,14 +17,12 @@
 package com.example.android.wardrobe;
 
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.android.util.JuSmartImageView;
-import com.loopj.android.image.SmartImageView;
 
 /**
  * A fragment representing a single step in a wizard. The fragment shows a dummy title indicating
