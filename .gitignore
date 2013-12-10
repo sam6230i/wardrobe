@@ -1,3 +1,9 @@
+.gitignore
+.classpath
+.project
+.settings
+bin
+project.properties
 .idea
 .class
 out
