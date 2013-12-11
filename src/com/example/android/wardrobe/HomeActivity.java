@@ -122,15 +122,10 @@ public class HomeActivity extends SlidingFragmentActivity
 		 */
 		if(TextUtils.isEmpty(wardrobeDataSource.getValueFromSettings("notif_set")))
 		{
-			Toast.makeText(this, "notif_set is empty", Toast.LENGTH_LONG).show();
 			setUpAlarm();
 			wardrobeDataSource.setValueForSettings("notif_set", "true");
 			
-		} else {
-			Toast.makeText(this, "notif_set already set", Toast.LENGTH_LONG).show();
-			
 		}
-		
 	}
 	
 	/**
