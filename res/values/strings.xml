@@ -55,4 +55,6 @@
 	<string name="selection">Today\'s Clothes</string>
 	<string name="history">History</string>
 	<string name="notification_text">Checkout todays outfit</string>
+	<string name="shirt">Shirt</string>
+	<string name="pant">Pant</string>
 </resources>

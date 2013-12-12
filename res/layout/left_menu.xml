@@ -1,30 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:alwaysDrawnWithCache="true"
-                android:layout_width="match_parent"
-                android:background="#474747"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alwaysDrawnWithCache="true"
+    android:background="#474747" >
 
-	<ImageView
-			android:id="@+id/logo_box"
-			android:layout_width="fill_parent"
-			android:layout_height="66dip"
-			android:adjustViewBounds="true"
-			android:layout_marginTop="5dp"
-			android:layout_marginRight="5dp"
-			android:layout_alignParentTop="true"
-			android:scaleType="centerInside"
-			android:layout_alignParentRight="true"
-			android:src="@drawable/logo"/>
+    <ImageView
+        android:id="@+id/logo_box"
+        android:layout_width="fill_parent"
+        android:layout_height="66dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/logo" />
 
-	<ListView
-			android:layout_marginTop="10dip"
-			android:id="@+id/left_list"
-			android:layout_below="@id/logo_box"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:divider="@null"
-			android:dividerHeight="0dip"/>
+    <LinearLayout
+        android:id="@+id/left_menu_bottom_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:minHeight="60dip"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Capture Using Custom Camera"
+            android:textColor="#ffffff" />
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/left_menu_bottom_btn_shirt"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="shirt"
+                android:text="@string/shirt" />
+            
+            <Button
+                android:id="@+id/left_menu_bottom_btn_pant"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="pant"
+                android:text="@string/pant" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/left_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/left_menu_bottom_linearlayout"
+        android:layout_below="@id/logo_box"
+        android:layout_marginTop="10dip"
+        android:divider="@null"
+        android:dividerHeight="0dip" />
 
 </RelativeLayout>

@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.android.util.Menu;
@@ -30,6 +32,7 @@ public class LeftMenuFragment extends Fragment {
 	public HomeActivity activity;
 	ListView leftList;
 	LeftMenuAdapter adapter;
+	Button mBtnShirt, mBtnPant;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class LeftMenuFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.left_menu, null);
 		leftList = (ListView) view.findViewById(R.id.left_list);
+		mBtnShirt = (Button) view.findViewById(R.id.left_menu_bottom_btn_shirt);
+		mBtnPant = (Button) view.findViewById(R.id.left_menu_bottom_btn_pant);
 		return view;
 	}
 
@@ -59,6 +64,18 @@ public class LeftMenuFragment extends Fragment {
 				activity.onActionSelected(action);
 			}
 		});
+		
+		OnClickListener btnClickListener = new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				activity.onButtonClicked(v.getTag().toString());
+			}
+		};
+		
+		mBtnPant.setOnClickListener(btnClickListener);
+		mBtnShirt.setOnClickListener(btnClickListener);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {

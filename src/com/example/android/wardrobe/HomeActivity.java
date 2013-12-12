@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -43,6 +44,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -115,38 +117,41 @@ public class HomeActivity extends SlidingFragmentActivity
 		FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.menu_frame, leftMenuFragment);
 		t.commitAllowingStateLoss();
-		
-		
+
 		/*
 		 * Check whether Settings value of "notif_set" is there in the DB or not.
 		 * This will prevent setting up alarm for notification everytime user enters the app.
 		 * This can be optimized further.
 		 */
-		if(!AppPreferences.getNotificationSetCheck(this))
+		if (!AppPreferences.getNotificationSetCheck(this))
 		{
 			setUpAlarm();
 			AppPreferences.setNotificationSetCheck(this, true);
-			
 		}
 	}
-	
+
 	/**
-	 * This fuction sets a repeating alarm using AlarmManager which will call the Notification Service every 24hrs at 06:00 AM.
+	 * This fuction sets a alarm using AlarmManager which will call the Notification Service at 06:00 AM.
+	 * 
 	 * @author Nishant Patil
 	 */
 	void setUpAlarm()
 	{
-		Intent intent=new Intent(this, NotificationService.class);
-	    AlarmManager manager=(AlarmManager)getSystemService(Activity.ALARM_SERVICE);
-	    PendingIntent pendingIntent=PendingIntent.getService(this, 0,intent, 0);
-	    Calendar cal=Calendar.getInstance();
-	    cal.set(Calendar.HOUR_OF_DAY, 6);
-	    cal.set(Calendar.MINUTE,0);
-	    cal.set(Calendar.SECOND, 0);
-	    Log.d("Nish", " Setting up Alarm at : " + cal.getTimeInMillis());
-	    Log.d("Nish", " Interval is : " + AlarmManager.INTERVAL_DAY);
-	    Log.d("Nish", " Should execute at : " + (cal.getTimeInMillis() + AlarmManager.INTERVAL_DAY));
-	    manager.setRepeating(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+		Intent intent = new Intent(this, NotificationService.class);
+		AlarmManager manager = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
+		PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 6);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+
+		if (cal.getTimeInMillis() <= System.currentTimeMillis())
+		{
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+		}
+
+		manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+		AppPreferences.setNotificationTimestamp(this, cal.getTimeInMillis());
 	}
 
 	public void setSelectionFragment()
@@ -285,6 +290,30 @@ public class HomeActivity extends SlidingFragmentActivity
 
 					// original = getResizedImageBitmap(mImageCaptureUri, -1, -1);
 					// setBitmap(getBitmap());
+				}
+				break;
+			case 111:
+				if (data != null)
+				{
+					mImageCaptureUri = Uri.parse(data.getStringExtra("uri"));
+				}
+				
+				shirts.add(wardrobeDataSource.addShirt(new Shirt(data.getStringExtra("path"))));
+				if (currentFragment instanceof SelectionFragment)
+				{
+					((SelectionFragment) currentFragment).mPagerAdapter.notifyDataSetChanged();
+				}
+				break;
+			case 112:
+				if (data != null)
+				{
+					mImageCaptureUri = Uri.parse(data.getStringExtra("uri"));
+					
+				}
+				pants.add(wardrobeDataSource.addPant(new Pant(data.getStringExtra("path"))));
+				if (currentFragment instanceof SelectionFragment)
+				{
+					((SelectionFragment) currentFragment).mPagerAdapter1.notifyDataSetChanged();
 				}
 				break;
 			}
@@ -508,5 +537,21 @@ public class HomeActivity extends SlidingFragmentActivity
 			e.printStackTrace();
 		}
 
+	}
+
+	public void onButtonClicked(String tag)
+	{
+		if (tag.equalsIgnoreCase("shirt"))
+		{
+			Intent intent = new Intent(this, CustomCamera.class);
+			intent.putExtra("type", tag);
+			this.startActivityForResult(intent, 111);
+		}
+		else if (tag.equalsIgnoreCase("pant"))
+		{
+			Intent intent = new Intent(this, CustomCamera.class);
+			intent.putExtra("type", tag);
+			this.startActivityForResult(intent, 112);
+		}
 	}
 }
