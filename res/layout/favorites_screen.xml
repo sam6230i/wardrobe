@@ -12,35 +12,34 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-		android:orientation="vertical"
-    android:gravity="top"
     android:layout_gravity="top"
-		>
+    android:gravity="top"
+    android:orientation="vertical" >
 
     <!-- Dummy content. -->
 
+    <com.example.android.util.JuSmartImageView
+        android:id="@+id/shirtImage"
+        style="?android:textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
 
-        <com.example.android.util.JuSmartImageView android:id="@+id/shirtImage"
-            style="?android:textAppearanceLarge"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            android:layout_weight="0.5"
-            />
+    <com.example.android.util.JuSmartImageView
+        android:id="@+id/pantImage"
+        style="?android:textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
 
-	<com.example.android.util.JuSmartImageView android:id="@+id/pantImage"
-	                                        style="?android:textAppearanceLarge"
-	                                        android:layout_width="match_parent"
-	                                        android:layout_height="0dp"
-	                                        android:scaleType="fitXY"
-	                                        android:adjustViewBounds="true"
-	                                        android:layout_weight="0.5"
-			/>
 </LinearLayout>
