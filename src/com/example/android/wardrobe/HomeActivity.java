@@ -43,10 +43,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.service.NotificationService;
+import com.example.android.sqlite.AppPreferences;
 import com.example.android.sqlite.Favourite;
 import com.example.android.sqlite.Pant;
 import com.example.android.sqlite.Shirt;
@@ -120,10 +122,10 @@ public class HomeActivity extends SlidingFragmentActivity
 		 * This will prevent setting up alarm for notification everytime user enters the app.
 		 * This can be optimized further.
 		 */
-		if(TextUtils.isEmpty(wardrobeDataSource.getValueFromSettings("notif_set")))
+		if(!AppPreferences.getNotificationSetCheck(this))
 		{
 			setUpAlarm();
-			wardrobeDataSource.setValueForSettings("notif_set", "true");
+			AppPreferences.setNotificationSetCheck(this, true);
 			
 		}
 	}
@@ -138,10 +140,13 @@ public class HomeActivity extends SlidingFragmentActivity
 	    AlarmManager manager=(AlarmManager)getSystemService(Activity.ALARM_SERVICE);
 	    PendingIntent pendingIntent=PendingIntent.getService(this, 0,intent, 0);
 	    Calendar cal=Calendar.getInstance();
-	    cal.set(Calendar.HOUR_OF_DAY, 06);
-	    cal.set(Calendar.MINUTE,00);
-	    cal.set(Calendar.SECOND, 00);
-	    manager.setRepeating(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(), 24*60*60*1000, pendingIntent);
+	    cal.set(Calendar.HOUR_OF_DAY, 6);
+	    cal.set(Calendar.MINUTE,0);
+	    cal.set(Calendar.SECOND, 0);
+	    Log.d("Nish", " Setting up Alarm at : " + cal.getTimeInMillis());
+	    Log.d("Nish", " Interval is : " + AlarmManager.INTERVAL_DAY);
+	    Log.d("Nish", " Should execute at : " + (cal.getTimeInMillis() + AlarmManager.INTERVAL_DAY));
+	    manager.setRepeating(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 	}
 
 	public void setSelectionFragment()
