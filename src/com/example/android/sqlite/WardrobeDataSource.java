@@ -10,7 +10,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class WardrobeDataSource {
 
@@ -293,81 +292,6 @@ public class WardrobeDataSource {
 	public Date createDate(long timeInSeconds) {
 		long timeInMills = timeInSeconds * 1000;
 		return new Date(timeInMills);
-	}
-	
-	
-	/**
-	 * Returns Value stored in Settings table corresponding to Key
-	 * 
-	 * @param key : Key by which its Value should be searched inside table 
-	 * @return String Value.
-	 * 
-	 * @author Nishant Patil
-	 */
-	public String getValueFromSettings(String key) {
-		String where = WardrobeSqliteHelper.SETTINGS_KEY + " = ?";
-		Cursor cur = null;
-		String value = "";
-
-		try {
-			cur = database.query(WardrobeSqliteHelper.SETTINGS_TABLE_NAME, 
-					new String[] { WardrobeSqliteHelper.SETTINGS_VALUE }, 
-					where, new String[] { key }, 
-					null, null, null);
-
-			if (cur != null && cur.moveToNext()) {
-				value = cur.getString(0);
-			}
-		}
-		catch (Exception e) {
-			Log.e(WardrobeDataSource.this.getClass().getName(), " getValueFromSettings :: ", e);
-		}
-		finally {
-			if (cur != null && !cur.isClosed()) {
-				cur.close();
-			}
-		}
-		return value;
-	}
-	
-	
-	public void setValueForSettings(String key, String value) {
-		ContentValues values = new ContentValues();
-		values.put(WardrobeSqliteHelper.SETTINGS_VALUE, value);
-		
-		if(checkIfSettingsKeyExists(key)) {
-			String where = WardrobeSqliteHelper.SETTINGS_KEY + " = ?";
-			database.update(WardrobeSqliteHelper.SETTINGS_TABLE_NAME, values, where, new String[] { key });
-		}
-		else {
-			values.put(WardrobeSqliteHelper.SETTINGS_KEY, key);
-			database.insert(WardrobeSqliteHelper.SETTINGS_TABLE_NAME, null, values);
-		}
-	}
-	
-	private boolean checkIfSettingsKeyExists(String key) {
-		String where = WardrobeSqliteHelper.SETTINGS_KEY + " = ?";
-		Cursor cur = null;
-		
-		try {
-			cur = database.query(WardrobeSqliteHelper.SETTINGS_TABLE_NAME, null, where, new String[] { key }, 
-					null, null, null);
-
-			if (cur != null) {
-				if(cur.getCount() > 0){
-					return true;
-				}
-			}
-		}
-		catch (Exception e) {
-			Log.e(WardrobeDataSource.this.getClass().getName(), " getValueFromSettings :: ", e);
-		}
-		finally {
-			if (cur != null && !cur.isClosed()) {
-				cur.close();
-			}
-		}
-		return false;
 	}
 
 }
