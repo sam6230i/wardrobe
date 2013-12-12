@@ -49,6 +49,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.camera.CustomCamera;
 import com.example.android.service.NotificationService;
 import com.example.android.sqlite.AppPreferences;
 import com.example.android.sqlite.Favourite;

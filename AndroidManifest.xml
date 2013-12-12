@@ -54,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CustomCamera"
+            android:name="com.example.android.camera.CustomCamera"
             android:screenOrientation="portrait" >
         </activity>
 

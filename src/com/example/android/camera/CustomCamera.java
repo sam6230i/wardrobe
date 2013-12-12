@@ -1,4 +1,4 @@
-package com.example.android.wardrobe;
+package com.example.android.camera;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+
+import com.example.android.wardrobe.R;
+import com.example.android.wardrobe.R.layout;
 
 import android.app.Activity;
 import android.content.ComponentName;
