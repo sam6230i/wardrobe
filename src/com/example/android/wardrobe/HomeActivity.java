@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -43,13 +42,11 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.android.camera.CustomCamera;
+import com.example.android.camera.CropCamera;
+import com.example.android.camera.SurfaceViewCamera;
 import com.example.android.service.NotificationService;
 import com.example.android.sqlite.AppPreferences;
 import com.example.android.sqlite.Favourite;
@@ -78,6 +75,9 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public class HomeActivity extends SlidingFragmentActivity
 {
+	
+	private static final String TAG = "HomeActivity";
+	
 	/**
 	 * The number of pages (wizard steps) to show in this demo.
 	 */
@@ -296,28 +296,48 @@ public class HomeActivity extends SlidingFragmentActivity
 			case 111:
 				if (data != null)
 				{
-					mImageCaptureUri = Uri.parse(data.getStringExtra("uri"));
-				}
-				
-				shirts.add(wardrobeDataSource.addShirt(new Shirt(data.getStringExtra("path"))));
-				if (currentFragment instanceof SelectionFragment)
-				{
-					((SelectionFragment) currentFragment).mPagerAdapter.notifyDataSetChanged();
+					addAndRefreshShirts(data.getStringExtra("path"));
 				}
 				break;
 			case 112:
 				if (data != null)
 				{
-					mImageCaptureUri = Uri.parse(data.getStringExtra("uri"));
-					
-				}
-				pants.add(wardrobeDataSource.addPant(new Pant(data.getStringExtra("path"))));
-				if (currentFragment instanceof SelectionFragment)
-				{
-					((SelectionFragment) currentFragment).mPagerAdapter1.notifyDataSetChanged();
+					addAndRefreshPants(data.getStringExtra("path"));
 				}
 				break;
+			case 113:
+				if (data != null)
+				{
+					addAndRefreshShirts(data.getStringExtra("path"));
+				}
+				
+				break;
+			case 114:
+				if (data != null)
+				{
+					addAndRefreshPants(data.getStringExtra("path"));
+				}
+				break;
+			
 			}
+		}
+	}
+	
+	private void addAndRefreshPants(String path)
+	{
+		pants.add(wardrobeDataSource.addPant(new Pant(path)));
+		if (currentFragment instanceof SelectionFragment)
+		{
+			((SelectionFragment) currentFragment).mPagerAdapter1.notifyDataSetChanged();
+		}
+	}
+	
+	private void addAndRefreshShirts(String path)
+	{
+		shirts.add(wardrobeDataSource.addShirt(new Shirt(path)));
+		if (currentFragment instanceof SelectionFragment)
+		{
+			((SelectionFragment) currentFragment).mPagerAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -544,15 +564,27 @@ public class HomeActivity extends SlidingFragmentActivity
 	{
 		if (tag.equalsIgnoreCase("shirt"))
 		{
-			Intent intent = new Intent(this, CustomCamera.class);
+			Intent intent = new Intent(this, CropCamera.class);
 			intent.putExtra("type", tag);
 			this.startActivityForResult(intent, 111);
 		}
 		else if (tag.equalsIgnoreCase("pant"))
 		{
-			Intent intent = new Intent(this, CustomCamera.class);
+			Intent intent = new Intent(this, CropCamera.class);
 			intent.putExtra("type", tag);
 			this.startActivityForResult(intent, 112);
+		}
+		else if (tag.equalsIgnoreCase("cam_shirt"))
+		{
+			Intent intent = new Intent(this, SurfaceViewCamera.class);
+			intent.putExtra("type", tag);
+			this.startActivityForResult(intent, 113);
+		}
+		else if (tag.equalsIgnoreCase("cam_pant"))
+		{
+			Intent intent = new Intent(this, SurfaceViewCamera.class);
+			intent.putExtra("type", tag);
+			this.startActivityForResult(intent, 114);
 		}
 	}
 }

@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Capture Using Custom Camera"
+            android:padding="4dip"
+            android:text="Capture Using Camera (Crop)"
             android:textColor="#ffffff" />
 
         <LinearLayout
@@ -55,6 +56,38 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:tag="pant"
+                android:text="@string/pant" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="4dip"
+            android:text="Capture Using Surface Camera"
+            android:textColor="#ffffff" />
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/left_menu_bottom_btn_cam_shirt"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="cam_shirt"
+                android:text="@string/shirt" />
+            
+            <Button
+                android:id="@+id/left_menu_bottom_btn_cam_pant"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="cam_pant"
                 android:text="@string/pant" />
         </LinearLayout>
     </LinearLayout>

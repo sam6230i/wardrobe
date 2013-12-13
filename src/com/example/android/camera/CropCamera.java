@@ -1,14 +1,7 @@
 package com.example.android.camera;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
-
-import com.example.android.wardrobe.R;
-import com.example.android.wardrobe.R.layout;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -17,11 +10,11 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.text.TextUtils;
 import android.util.Log;
 
-public class CustomCamera extends Activity
+import com.example.android.wardrobe.R;
+
+public class CropCamera extends Activity
 {
 
 	String TAG = "CustomCamera";
@@ -30,7 +23,7 @@ public class CustomCamera extends Activity
 
 	Activity mContext;
 
-	String type = "";
+	String mType = "";
 
 	public Uri imageCaptureUri = null;
 
@@ -51,26 +44,12 @@ public class CustomCamera extends Activity
 		Intent i = getIntent();
 		if (i.hasExtra("type"))
 		{
-			type = i.getStringExtra("type");
+			mType = i.getStringExtra("type");
 		}
 
 		Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
-		String directory_path = Environment.getExternalStorageDirectory().toString() + "/Wordrobe/";
-		File f = new File(directory_path);
-		f.mkdirs();
-
-		if (!TextUtils.isEmpty(type))
-		{
-			imageCaptureUri = Uri.fromFile(new File(f, "wordrobe_" + type + "_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
-		}
-		else
-		{
-			imageCaptureUri = Uri.fromFile(new File(f, "wordrobe_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
-		}
-
-		imageCaptureUri = Uri.fromFile(new File(f, "wordrobe_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
-		Log.d(TAG, "captureAndCropImage CaptureURI : " + imageCaptureUri.toString());
+		imageCaptureUri = Uri.fromFile(CameraUtils.getPhotoFile(mType));
 		intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageCaptureUri);
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
@@ -109,58 +88,6 @@ public class CustomCamera extends Activity
 		}
 	}
 
-	public String Save_image_to_SD(Bitmap bm)
-	{
-		String path = "";
-		String meteoDirectory_path = Environment.getExternalStorageDirectory().toString() + "/Wordrobe";
-		File file;
-		if (!TextUtils.isEmpty(type))
-		{
-			path = meteoDirectory_path + "/" + "wordrobe_" + type + "_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-		}
-		else
-		{
-			path = meteoDirectory_path + "/" + "wordrobe_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-		}
-		file = new File(path);
-		OutputStream outStream = null;
-
-		try
-		{
-			outStream = new FileOutputStream(file);
-			bm.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-			outStream.flush();
-
-			Log.d(TAG, "OK, Image Saved to SD");
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-			Log.d(TAG, "FileNotFoundException: " + e.toString());
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			Log.d(TAG, "IOException: " + e.toString());
-		}
-		finally
-		{
-			if (outStream != null)
-			{
-				try
-				{
-					outStream.close();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return path;
-	}
-
 	public void DeleteImage()
 	{
 		try
@@ -173,7 +100,7 @@ public class CustomCamera extends Activity
 		}
 		catch (Exception e)
 		{
-			Log.d(TAG, "Error: " + e);
+			Log.e(TAG, "Error: " + e);
 		}
 
 	}
@@ -186,7 +113,7 @@ public class CustomCamera extends Activity
 		{
 			return;
 		}
-		else if (resultCode != RESULT_CANCELED)
+		if (resultCode == RESULT_CANCELED)
 		{
 			finish();
 		}
@@ -204,15 +131,14 @@ public class CustomCamera extends Activity
 				Bitmap filePic = extras.getParcelable("data");
 				if (filePic != null)
 				{
-					String path = Save_image_to_SD(filePic);
+					String path = CameraUtils.Save_image_to_SD(filePic, mType);
 					data.putExtra("uri", imageCaptureUri.toString());
 					data.putExtra("path", path);
 					this.setResult(resultCode, data);
 					this.finish();
 				}
 			}
-
-			// DeleteImage();
+//			 DeleteImage();
 
 			break;
 		}
