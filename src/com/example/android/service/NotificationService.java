@@ -1,5 +1,12 @@
 package com.example.android.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -7,9 +14,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.IBinder;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.android.sqlite.AppPreferences;
+import com.example.android.sqlite.DbUtils;
 import com.example.android.util.NotifManager;
 
 /**
@@ -45,8 +56,9 @@ public class NotificationService extends Service
 		}
 
 		manager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
 		AppPreferences.setNotificationTimestamp(this, cal.getTimeInMillis());
+
+		DbUtils.backupDb();
 
 		stopSelf();
 	}

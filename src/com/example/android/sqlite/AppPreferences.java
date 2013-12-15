@@ -8,6 +8,7 @@ public class AppPreferences {
 	
 	private static final String NOTIFICATION_SET = "notif_set";
 	private static final String NOTIFICATION_TIMESTAMP = "notif_timestamp";
+	private static final String DB_RESTORE = "db_restore";
 	
 	public static void setNotificationSetCheck( Context context, boolean isSet){
 		SharedPreferences mSettings = context.getSharedPreferences(WORDROBE_PREF, Context.MODE_PRIVATE);
@@ -32,6 +33,22 @@ public class AppPreferences {
 	public static long getNotificationTimestamp(Context context) {
 		SharedPreferences mSettings = context.getSharedPreferences(WORDROBE_PREF, Context.MODE_PRIVATE);
 		return mSettings.getLong(NOTIFICATION_TIMESTAMP, 0);
+	}
+
+	public static boolean getDbRestoreDone(Context context)
+	{
+		SharedPreferences mSettings = context.getSharedPreferences(WORDROBE_PREF, Context.MODE_PRIVATE);
+		return mSettings.getBoolean(DB_RESTORE, false);
+	}
+	
+	public static void setDbRestoreDone(Context context, boolean b)
+	{
+		SharedPreferences mSettings = context.getSharedPreferences(WORDROBE_PREF, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = mSettings.edit();
+		editor.putBoolean(DB_RESTORE, b);
+		editor.commit();
+		return;
+		
 	}
 	
 }

@@ -102,6 +102,25 @@ public class HomeActivity extends SlidingFragmentActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
 		setBehindContentView(R.layout.left_menu_frame);
+		
+		
+//		if (!AppPreferences.getDbRestoreDone(this))
+//		{
+//			String directory_path = Environment.getExternalStorageDirectory().toString() + "/Wordrobe/Backup/";
+//			File inputFile = new File(directory_path, "wordrobeDB.bak");
+//
+//			if (inputFile.exists())
+//			{
+//				DbUtils.restoreDB();
+//				AppPreferences.setDbRestoreDone(this, true);
+//			}
+//			else
+//			{
+//				Log.d("BackUpTask", "inputFile does not exists : " + inputFile.getAbsolutePath());
+//			}
+//		}
+		
+		
 		wardrobeDataSource = new WardrobeDataSource(this);
 		wardrobeDataSource.open();
 
