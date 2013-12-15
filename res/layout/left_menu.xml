@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:tag="shirt"
                 android:text="@string/shirt" />
-            
+
             <Button
                 android:id="@+id/left_menu_bottom_btn_pant"
                 style="?android:attr/buttonBarButtonStyle"
@@ -58,6 +58,7 @@
                 android:tag="pant"
                 android:text="@string/pant" />
         </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,6 +66,7 @@
             android:padding="4dip"
             android:text="Capture Using Surface Camera"
             android:textColor="#ffffff" />
+
         <LinearLayout
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
@@ -80,7 +82,7 @@
                 android:layout_weight="1"
                 android:tag="cam_shirt"
                 android:text="@string/shirt" />
-            
+
             <Button
                 android:id="@+id/left_menu_bottom_btn_cam_pant"
                 style="?android:attr/buttonBarButtonStyle"
@@ -92,11 +94,21 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/left_menu_grid_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/left_menu_bottom_linearlayout"
+        android:gravity="center"
+        android:minHeight="60dip"
+        android:tag="gridview"
+        android:text="GridView" />
+
     <ListView
         android:id="@+id/left_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/left_menu_bottom_linearlayout"
+        android:layout_above="@id/left_menu_grid_button"
         android:layout_below="@id/logo_box"
         android:layout_marginTop="10dip"
         android:divider="@null"

@@ -586,5 +586,10 @@ public class HomeActivity extends SlidingFragmentActivity
 			intent.putExtra("type", tag);
 			this.startActivityForResult(intent, 114);
 		}
+		else if (tag.equalsIgnoreCase("gridview"))
+		{
+			Intent intent = new Intent(this, GridviewActivity.class);
+			this.startActivity(intent);
+		}
 	}
 }

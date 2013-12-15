@@ -32,7 +32,7 @@ public class LeftMenuFragment extends Fragment {
 	public HomeActivity activity;
 	ListView leftList;
 	LeftMenuAdapter adapter;
-	Button mBtnShirt, mBtnPant, mBtnSurfaceCamShirt, mBtnSurfaceCamPant;
+	Button mBtnShirt, mBtnPant, mBtnSurfaceCamShirt, mBtnSurfaceCamPant, mBtnGridView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class LeftMenuFragment extends Fragment {
 		mBtnPant = (Button) view.findViewById(R.id.left_menu_bottom_btn_pant);
 		mBtnSurfaceCamShirt = (Button) view.findViewById(R.id.left_menu_bottom_btn_cam_shirt);
 		mBtnSurfaceCamPant = (Button) view.findViewById(R.id.left_menu_bottom_btn_cam_pant);
+		mBtnGridView = (Button) view.findViewById(R.id.left_menu_grid_button);
 		return view;
 	}
 
@@ -80,6 +81,7 @@ public class LeftMenuFragment extends Fragment {
 		mBtnShirt.setOnClickListener(btnClickListener);
 		mBtnSurfaceCamPant.setOnClickListener(btnClickListener);
 		mBtnSurfaceCamShirt.setOnClickListener(btnClickListener);
+		mBtnGridView.setOnClickListener(btnClickListener);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {

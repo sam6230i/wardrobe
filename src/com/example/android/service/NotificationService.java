@@ -1,7 +1,6 @@
 package com.example.android.service;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -9,8 +8,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.text.format.DateFormat;
-import android.util.Log;
 
 import com.example.android.sqlite.AppPreferences;
 import com.example.android.util.NotifManager;
