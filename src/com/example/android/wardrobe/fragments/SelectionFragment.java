@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.android.sqlite.Pant;
 import com.example.android.sqlite.Shirt;
@@ -30,33 +31,37 @@ import com.example.android.wardrobe.SingleViewPagerFragment;
  * Time: 12:29 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SelectionFragment extends Fragment {
+public class SelectionFragment extends Fragment
+{
 
-	//	private static final int NUM_PAGES = 5;
-
+	// private static final int NUM_PAGES = 5;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally to access previous
 	 * and next wizard steps.
 	 */
 	public ViewPager mPager;
+
 	public ViewPager mPager1;
 
 	/**
 	 * The pager adapter, which provides the pages to the view pager widget.
 	 */
 	public PagerAdapter mPagerAdapter;
-	public PagerAdapter mPagerAdapter1;
 
+	public PagerAdapter mPagerAdapter1;
 
 	private HomeActivity activity;
 
 	private CheckBox favorite;
+
 	private CheckBox selection;
+
 	private ImageButton shuffle;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		View root = inflater.inflate(R.layout.activity_home_selection, container, false);
 
@@ -67,9 +72,11 @@ public class SelectionFragment extends Fragment {
 		mPager = (ViewPager) root.findViewById(R.id.pager);
 		mPagerAdapter = new ScreenSlidePagerAdapter(activity, activity.getFragmentManager(), activity.shirts);
 		mPager.setAdapter(mPagerAdapter);
-		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
+		{
 			@Override
-			public void onPageSelected(int position) {
+			public void onPageSelected(int position)
+			{
 				// When changing pages, reset the action bar actions since they are dependent
 				// on which page is currently active. An alternative approach is to have each
 				// fragment expose actions itself (rather than the activity exposing actions),
@@ -78,14 +85,15 @@ public class SelectionFragment extends Fragment {
 				activity.invalidateOptionsMenu();
 			}
 		});
-
 
 		mPager1 = (ViewPager) root.findViewById(R.id.pager1);
 		mPagerAdapter1 = new ScreenSlidePagerAdapter(activity, activity.getFragmentManager(), activity.pants);
 		mPager1.setAdapter(mPagerAdapter1);
-		mPager1.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+		mPager1.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
+		{
 			@Override
-			public void onPageSelected(int position) {
+			public void onPageSelected(int position)
+			{
 				// When changing pages, reset the action bar actions since they are dependent
 				// on which page is currently active. An alternative approach is to have each
 				// fragment expose actions itself (rather than the activity exposing actions),
@@ -95,40 +103,70 @@ public class SelectionFragment extends Fragment {
 			}
 		});
 
-		favorite = (CheckBox)root.findViewById(R.id.favorite);
+		favorite = (CheckBox) root.findViewById(R.id.favorite);
 
-		favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		favorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+		{
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
 				int shirtPosition = mPager.getCurrentItem();
 				int pantPosition = mPager1.getCurrentItem();
-				if(isChecked) {
-					activity.wardrobeDataSource.addFavourite(
-							activity.shirts.get(shirtPosition).getId(),
-							activity.pants.get(pantPosition).getId());
-				} else {
-					activity.wardrobeDataSource.deleteFavourite(
-							activity.shirts.get(shirtPosition).getId(),
-							activity.pants.get(pantPosition).getId());
+				if (isChecked)
+				{
+					if ((!activity.shirts.isEmpty() && !activity.pants.isEmpty()))
+					{
+						activity.wardrobeDataSource.addFavourite(activity.shirts.get(shirtPosition).getId(), activity.pants.get(pantPosition).getId());
+					}
+					else {
+						favorite.setChecked(false);
+						Toast.makeText(activity, "Shirts or Pants dont have an item", Toast.LENGTH_LONG).show();
+					}
+				}
+				else
+				{
+					if ((!activity.shirts.isEmpty() && !activity.pants.isEmpty()))
+					{
+						activity.wardrobeDataSource.deleteFavourite(activity.shirts.get(shirtPosition).getId(), activity.pants.get(pantPosition).getId());
+					}
+					else {
+						favorite.setChecked(true);
+						Toast.makeText(activity, "Shirts or Pants dont have an item", Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		});
 
-		selection = (CheckBox)root.findViewById(R.id.selection);
+		selection = (CheckBox) root.findViewById(R.id.selection);
 
-		selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+		{
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
 				int shirtPosition = mPager.getCurrentItem();
 				int pantPosition = mPager1.getCurrentItem();
-				if(isChecked) {
-					activity.wardrobeDataSource.addToWore(
-							activity.shirts.get(shirtPosition).getId(),
-							activity.pants.get(pantPosition).getId());
-				} else {
-					activity.wardrobeDataSource.deleteFromWore(
-							activity.shirts.get(shirtPosition).getId(),
-							activity.pants.get(pantPosition).getId());
+				if (isChecked)
+				{
+					if ((!activity.shirts.isEmpty() && !activity.pants.isEmpty()))
+					{
+						activity.wardrobeDataSource.addToWore(activity.shirts.get(shirtPosition).getId(), activity.pants.get(pantPosition).getId());
+					}
+					else {
+						selection.setChecked(false);
+						Toast.makeText(activity, "Shirts or Pants dont have an item", Toast.LENGTH_LONG).show();
+					}
+				}
+				else
+				{
+					if ((!activity.shirts.isEmpty() && !activity.pants.isEmpty()))
+					{
+						activity.wardrobeDataSource.deleteFromWore(activity.shirts.get(shirtPosition).getId(), activity.pants.get(pantPosition).getId());
+					}
+					else {
+						selection.setChecked(true);
+						Toast.makeText(activity, "Shirts or Pants dont have an item", Toast.LENGTH_LONG).show();
+					}
 				}
 
 			}
@@ -136,9 +174,11 @@ public class SelectionFragment extends Fragment {
 
 		shuffle = (ImageButton) root.findViewById(R.id.shuffle);
 
-		shuffle.setOnClickListener(new View.OnClickListener() {
+		shuffle.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				int shirtRandom = (int) (Math.random() * activity.shirts.size());
 				int pantRandom = (int) (Math.random() * activity.pants.size());
 				mPager.setCurrentItem(shirtRandom);
@@ -150,62 +190,74 @@ public class SelectionFragment extends Fragment {
 		return root;
 	}
 
-	public void check() {
+	public void check()
+	{
 		int shirtPosition = mPager.getCurrentItem();
 		int pantPosition = mPager1.getCurrentItem();
 
-		if (!activity.shirts.isEmpty() && !activity.pants.isEmpty()) {
-			if(activity.wardrobeDataSource.isWornToday(
-					activity.shirts.get(shirtPosition).getId(),
-					activity.pants.get(pantPosition).getId())) {
+		if (!activity.shirts.isEmpty() && !activity.pants.isEmpty())
+		{
+			if (activity.wardrobeDataSource.isWornToday(activity.shirts.get(shirtPosition).getId(), activity.pants.get(pantPosition).getId()))
+			{
 				selection.setChecked(true);
-			} else {
+			}
+			else
+			{
 				selection.setChecked(false);
 			}
 
-			if(activity.wardrobeDataSource.isFavourite(
-					activity.shirts.get(shirtPosition).getId(),
-					activity.pants.get(pantPosition).getId())) {
+			if (activity.wardrobeDataSource.isFavourite(activity.shirts.get(shirtPosition).getId(), activity.pants.get(pantPosition).getId()))
+			{
 				favorite.setChecked(true);
-			} else {
+			}
+			else
+			{
 				favorite.setChecked(false);
 			}
 		}
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);    //To change body of overridden methods use File | Settings | File Templates.
-		this.activity = (HomeActivity)activity;
+	public void onAttach(Activity activity)
+	{
+		super.onAttach(activity); // To change body of overridden methods use File | Settings | File Templates.
+		this.activity = (HomeActivity) activity;
 	}
 
-	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter
+	{
 
 		private Context context;
+
 		private List list;
 
-		public ScreenSlidePagerAdapter(Context context, FragmentManager fm, List list) {
+		public ScreenSlidePagerAdapter(Context context, FragmentManager fm, List list)
+		{
 			super(fm);
 			this.context = context;
 			this.list = list;
 		}
 
 		@Override
-		public android.app.Fragment getItem(int position) {
+		public android.app.Fragment getItem(int position)
+		{
 			String imagePath = "";
-			if(list.get(position) instanceof Shirt) {
+			if (list.get(position) instanceof Shirt)
+			{
 				imagePath = ((Shirt) list.get(position)).getImagePath();
-			} else {
+			}
+			else
+			{
 				imagePath = ((Pant) list.get(position)).getImagePath();
 			}
 			return SingleViewPagerFragment.create(imagePath);
 		}
 
 		@Override
-		public int getCount() {
+		public int getCount()
+		{
 			return list.size();
 		}
 	}
-
 
 }
