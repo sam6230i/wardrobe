@@ -17,7 +17,6 @@
 package com.example.android.wardrobe;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +28,6 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,7 +35,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -246,26 +243,37 @@ public class HomeActivity extends SlidingFragmentActivity
 						{
 						case 0:
 							addWhat = what;
-							intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-							mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".png"));
-
-							intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-							intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.name());
-
-							try
+							if(addWhat == 0)
 							{
-								intent.putExtra("return-data", true);
-
-								startActivityForResult(intent, PICK_FROM_CAMERA);
-							}
-							catch (ActivityNotFoundException e)
+								Intent intent3 = new Intent(HomeActivity.this, SurfaceViewCamera.class);
+								intent3.putExtra("type", "cam_shirt");
+								HomeActivity.this.startActivityForResult(intent3, 113);
+							}else if(addWhat == 1)
 							{
-								e.printStackTrace();
-								/**
-								 * TODO show message to user
-								 */
+								Intent intent4 = new Intent(HomeActivity.this, SurfaceViewCamera.class);
+								intent4.putExtra("type", "cam_pant");
+								HomeActivity.this.startActivityForResult(intent4, 114);
 							}
+//							intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//							mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".png"));
+//
+//							intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+//							intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.name());
+//
+//							try
+//							{
+//								intent.putExtra("return-data", true);
+//
+//								startActivityForResult(intent, PICK_FROM_CAMERA);
+//							}
+//							catch (ActivityNotFoundException e)
+//							{
+//								e.printStackTrace();
+//								/**
+//								 * TODO show message to user
+//								 */
+//							}
 							break;
 						case 1:
 							addWhat = what;

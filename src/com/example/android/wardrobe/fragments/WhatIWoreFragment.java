@@ -2,12 +2,13 @@ package com.example.android.wardrobe.fragments;
 
 import java.util.List;
 
+
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -89,8 +90,8 @@ public class WhatIWoreFragment extends Fragment {
 		private Context context;
 		private List list;
 
-		public WhatIWorePagerAdapter(Context context, FragmentManager fm, List list) {
-			super(fm);
+		public WhatIWorePagerAdapter(Context context, android.app.FragmentManager fragmentManager, List list) {
+			super(fragmentManager);
 			this.context = context;
 			this.list = list;
 		}

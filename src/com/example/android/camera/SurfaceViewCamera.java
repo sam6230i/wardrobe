@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +20,8 @@ import android.widget.Button;
 
 import com.example.android.wardrobe.R;
 
-public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callback
-{
+public class SurfaceViewCamera extends Activity implements
+		SurfaceHolder.Callback {
 	private static final String TAG = "SurfaceViewCamera";
 
 	public static String INTENT_FILTER_PICTURE_SAVE_EVENT = "surfaceview.photo.save.events";
@@ -44,34 +45,32 @@ public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callbac
 	private BroadcastReceiver mReceiver = null;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.screen_camera);
 
 		mActivity = this;
 
 		mReceiver = new PhotoReceiver();
-		registerReceiver(mReceiver, new IntentFilter(INTENT_FILTER_PICTURE_SAVE_EVENT));
+		registerReceiver(mReceiver, new IntentFilter(
+				INTENT_FILTER_PICTURE_SAVE_EVENT));
 
 		Intent i = getIntent();
-		if (i.hasExtra("type"))
-		{
+		if (i.hasExtra("type")) {
 			mType = i.getStringExtra("type");
 		}
-		mPictureCallbackEventHandler = new PictureCallbackEventHandler(mActivity, mType);
+		mPictureCallbackEventHandler = new PictureCallbackEventHandler(
+				mActivity, mType);
 
 		mSurfaceView = (SurfaceView) findViewById(R.id.screen_camera_surfaceView);
 		mSurfaceHolder = mSurfaceView.getHolder();
 		mSurfaceHolder.addCallback(this);
 
 		mBtnTakePic = (Button) findViewById(R.id.screen_camera_button);
-		mBtnTakePic.setOnClickListener(new OnClickListener()
-		{
+		mBtnTakePic.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				inPreView = false;
 				mCamera.takePicture(null, null, mPictureCallbackEventHandler);
 			}
@@ -80,18 +79,15 @@ public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callbac
 	}
 
 	@Override
-	public void onResume()
-	{
+	public void onResume() {
 		super.onResume();
 		mCamera = Camera.open();
 		mCamera.startPreview();
 	}
 
 	@Override
-	public void onPause()
-	{
-		if (inPreView)
-		{
+	public void onPause() {
+		if (inPreView) {
 			mCamera.stopPreview();
 		}
 
@@ -99,8 +95,7 @@ public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callbac
 		mCamera = null;
 		inPreView = false;
 
-		if (mReceiver != null)
-		{
+		if (mReceiver != null) {
 			unregisterReceiver(mReceiver);
 			mReceiver = null;
 		}
@@ -109,11 +104,16 @@ public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callbac
 	}
 
 	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
-	{
-		if (mCamera != null)
-		{
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		if (mCamera != null) {
 			mCamera.stopPreview();
+
+			Display display = getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			width = size.x;
+			height = (size.y) / 2;
 
 			initPreview(width, height);
 
@@ -124,57 +124,42 @@ public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callbac
 	}
 
 	@Override
-	public void surfaceCreated(SurfaceHolder holder)
-	{
-		try
-		{
-			if (mCamera != null)
-			{
+	public void surfaceCreated(SurfaceHolder holder) {
+		try {
+			if (mCamera != null) {
 				mCamera.setPreviewDisplay(mSurfaceHolder);
-			}
-			else
-			{
+			} else {
 				Log.d(TAG, "camera null ");
 			}
-		}
-		catch (Exception e)
-		{
-			Log.e(TAG, "Exception in setPreviewDisplay() of surfaceCreated : ", e);
+		} catch (Exception e) {
+			Log.e(TAG, "Exception in setPreviewDisplay() of surfaceCreated : ",
+					e);
 		}
 
 	}
 
 	@Override
-	public void surfaceDestroyed(SurfaceHolder holder)
-	{
-		if (mCamera != null)
-		{
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		if (mCamera != null) {
 			mCamera.stopPreview();
 		}
 	}
 
-	private void initPreview(int width, int height)
-	{
-		if (mCamera != null && mSurfaceHolder.getSurface() != null)
-		{
-			try
-			{
+	private void initPreview(int width, int height) {
+		if (mCamera != null && mSurfaceHolder.getSurface() != null) {
+			try {
 				mCamera.setPreviewDisplay(mSurfaceHolder);
-			}
-			catch (Throwable t)
-			{
+			} catch (Throwable t) {
 				Log.e(TAG, "Exception in setPreviewDisplay()", t);
 			}
 
-			try
-			{
+			try {
 				Camera.Parameters parameters = mCamera.getParameters();
 
 				Camera.Size size = getBestPreviewSize(width, height, parameters);
 
 				Display display = this.getWindowManager().getDefaultDisplay();
-				switch (display.getRotation())
-				{
+				switch (display.getRotation()) {
 				case Surface.ROTATION_0: // This is display orientation
 					if (size.height > size.width)
 						parameters.setPreviewSize(size.height, size.width);
@@ -206,40 +191,29 @@ public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callbac
 				}
 
 				mCamera.setParameters(parameters);
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters)
-	{
+	private Camera.Size getBestPreviewSize(int width, int height,
+			Camera.Parameters parameters) {
 		Camera.Size result = null;
-		for (Camera.Size size : parameters.getSupportedPreviewSizes())
-		{
-			if (size.width <= width && size.height <= height)
-			{
-				if (size.width > size.height)
-				{
+		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+			if (size.width <= width && size.height <= height) {
+				if (size.width > size.height) {
 					size.height = size.width;
-				}
-				else
-				{
+				} else {
 					size.width = size.height;
 				}
 
-				if (result == null)
-				{
+				if (result == null) {
 					result = size;
-				}
-				else
-				{
+				} else {
 					int resultArea = result.width * result.height;
 					int newArea = size.width * size.height;
-					if (newArea > resultArea)
-					{
+					if (newArea > resultArea) {
 						result = size;
 					}
 				}
@@ -255,12 +229,10 @@ public class SurfaceViewCamera extends Activity implements SurfaceHolder.Callbac
 		return (result);
 	}
 
-	public class PhotoReceiver extends BroadcastReceiver
-	{
+	public class PhotoReceiver extends BroadcastReceiver {
 
 		@Override
-		public void onReceive(Context context, Intent intent)
-		{
+		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Picture saved callback received.");
 			String path = intent.getStringExtra("path");
 			Intent data = new Intent();

@@ -1,4 +1,5 @@
 package com.example.android.sqlite;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -19,11 +20,11 @@ public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "wardrobe.db";
 	private static final int DATABASE_VERSION = 1;
 
-	
 	/*
 	 * I would prefer using StringBuilder to build a query and create a table.
-	 * Keeping all create table queries as static does not make sense
-	 * as they will never be used in apps lifetime again (Except in upgrade cases, still...)  
+	 * Keeping all create table queries as static does not make sense as they
+	 * will never be used in apps lifetime again (Except in upgrade cases,
+	 * still...)
 	 */
 	// Database creation sql statement
 	private static final String PANTS_TABLE_CREATE = "create table "
@@ -38,25 +39,23 @@ public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 
 	private static final String FAVOURITES_TABLE_CREATE = "create table "
 			+ FAVOURITES_TABLE_NAME + "(" + COLUMN_ID
-			+ " integer primary key autoincrement, "
-			+ SHIRT_ID + " integer, "
-			+ PANT_ID + " integer, "
-			+ " FOREIGN KEY(" + SHIRT_ID + ") REFERENCES " + SHIRTS_TABLE_NAME + "(" + COLUMN_ID + ") "
-			+ " FOREIGN KEY(" + PANT_ID + ") REFERENCES " + PANTS_TABLE_NAME + "(" + COLUMN_ID + ") "
-			+ " UNIQUE(" + SHIRT_ID + "," +  PANT_ID + ") ON CONFLICT IGNORE "
-			+ ")";
+			+ " integer primary key autoincrement, " + SHIRT_ID + " integer, "
+			+ PANT_ID + " integer, " + " FOREIGN KEY(" + SHIRT_ID
+			+ ") REFERENCES " + SHIRTS_TABLE_NAME + "(" + COLUMN_ID + ") "
+			+ " FOREIGN KEY(" + PANT_ID + ") REFERENCES " + PANTS_TABLE_NAME
+			+ "(" + COLUMN_ID + ") " + " UNIQUE(" + SHIRT_ID + "," + PANT_ID
+			+ ") ON CONFLICT IGNORE " + ")";
 
 	private static final String WORE_TABLE_CREATE = "create table "
 			+ WORE_TABLE_NAME + "(" + COLUMN_ID
-			+ " integer primary key autoincrement, "
-			+ SHIRT_ID + " integer, "
-			+ PANT_ID + " integer, "
-			+ WORE_DATE + " integer, "
-			+ " FOREIGN KEY(" + SHIRT_ID + ") REFERENCES " + SHIRTS_TABLE_NAME + "(" + COLUMN_ID + ") "
-			+ " FOREIGN KEY(" + PANT_ID + ") REFERENCES " + PANTS_TABLE_NAME + "(" + COLUMN_ID + ") "
-			+ " UNIQUE(" + SHIRT_ID + ", " +  PANT_ID + ", " + WORE_DATE + ") ON CONFLICT IGNORE "
-			+ ")";
-	
+			+ " integer primary key autoincrement, " + SHIRT_ID + " integer, "
+			+ PANT_ID + " integer, " + WORE_DATE + " integer, "
+			+ " FOREIGN KEY(" + SHIRT_ID + ") REFERENCES " + SHIRTS_TABLE_NAME
+			+ "(" + COLUMN_ID + ") " + " FOREIGN KEY(" + PANT_ID
+			+ ") REFERENCES " + PANTS_TABLE_NAME + "(" + COLUMN_ID + ") "
+			+ " UNIQUE(" + SHIRT_ID + ", " + PANT_ID + ", " + WORE_DATE
+			+ ") ON CONFLICT IGNORE " + ")";
+
 	public WardrobeSqliteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -69,16 +68,23 @@ public class WardrobeSqliteHelper extends SQLiteOpenHelper {
 		database.execSQL(WORE_TABLE_CREATE);
 	}
 
+	//By nikhil 
+	
+	//I really could not get this function implementation becasue this means
+	// every time user upgardes the database, he/she will loose previous
+	// records. Is it done purposely?
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(WardrobeSqliteHelper.class.getName(),	"Upgrading database from version " + oldVersion + " to "
+		Log.w(WardrobeSqliteHelper.class.getName(),
+				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + FAVOURITES_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + WORE_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + SHIRTS_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + PANTS_TABLE_NAME);
-		
-		// This call is must in onUpgrade. Otherwise it will never create db again.
+
+		// This call is must in onUpgrade. Otherwise it will never create db
+		// again.
 		onCreate(db);
 
 	}

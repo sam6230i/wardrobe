@@ -15,8 +15,8 @@
 
         <SurfaceView
             android:id="@+id/screen_camera_surfaceView"
-            android:layout_width="250dip"
-            android:layout_height="250dip" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
